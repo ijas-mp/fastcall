@@ -9,7 +9,7 @@ client = TestClient(app)
 async def test_websocket_connect():
     room_name = "testroom"
     client_id = "testclient"
-    
+
     # Synchronous connection
     with client.websocket_connect(f"/ws/{room_name}/{client_id}") as websocket:
         # Test if the connection was successful
@@ -33,7 +33,7 @@ async def test_broadcast_offer():
             # Receive message on second websocket connection
             response = websocket2.receive_text()
             received_message = json.loads(response)
-            
+
             # Verify that the message broadcast is correct
             assert received_message["type"] == "offer"
             assert received_message["sdp"] == "fake_sdp"
@@ -56,7 +56,7 @@ async def test_handle_join():
             # Receive join message on second websocket connection
             response = websocket2.receive_text()
             received_message = json.loads(response)
-            
+
             # Verify the message type and content
             assert received_message["type"] == "join"
             assert received_message["username"] == "client1"
@@ -79,7 +79,7 @@ async def test_handle_candidate():
             # Receive candidate message on second websocket connection
             response = websocket2.receive_text()
             received_message = json.loads(response)
-            
+
             # Verify the message type and content
             assert received_message["type"] == "candidate"
             assert received_message["candidate"] == "fake_candidate"
