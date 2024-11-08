@@ -6,16 +6,15 @@ from typing import Dict, List, Optional
 
 app = FastAPI()
 
-# Mount static files directory
 app.mount("/static", StaticFiles(directory="fastcall/static"), name="static")
 
-# Configure logging to file and console
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
     handlers=[
-        logging.FileHandler("app.log"),  # Log to file
-        logging.StreamHandler(),  # Log to console
+        logging.FileHandler("app.log"),
+        logging.StreamHandler(),
     ],
 )
 logger = logging.getLogger(__name__)
@@ -23,7 +22,6 @@ logger = logging.getLogger(__name__)
 
 class ConnectionManager:
     def __init__(self):
-        # Manage active connections in multiple rooms
         self.rooms: Dict[str, List[WebSocket]] = {}
 
     async def connect(self, websocket: WebSocket, room_name: str):
@@ -81,9 +79,6 @@ async def websocket_endpoint(websocket: WebSocket, room_name: str, client_id: st
     except Exception as e:
         logger.error(f"Error with client {client_id} in room {room_name}: {e}")
         await websocket.close()
-
-
-# Handler functions for different message types
 
 
 async def handle_join(room_name: str, join_data: dict, websocket: WebSocket):
